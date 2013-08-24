@@ -2,6 +2,7 @@ include $(TOPDIR)/rules.mk
 	PKG_NAME:=zdclient
 	PKG_RELEASE:=1.2.2
 	PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)
+	PKG_BUILD_LIB_DIR := $(BUILD_DIR)/libpcap-1.0.0/ipkg-install/usr/lib
 include $(INCLUDE_DIR)/nls.mk
 include $(INCLUDE_DIR)/package.mk
 
