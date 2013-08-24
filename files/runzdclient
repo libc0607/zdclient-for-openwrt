@@ -1,0 +1,36 @@
+#!/bin/bash
+#username
+USERNAME=''
+
+#password
+PASSWORD=''
+
+#run zdclient -h for help
+ARGS=(-b --dhcp -g XX --ip XX --mask XX --ver 3.6.04.1110fk)
+
+#---------------------------------------------------------------------
+LOGFILE=/tmp/zdclient.log
+
+echo Beginning Authentication...
+
+zdclient $@ ${ARGS[@]} -u $USERNAME -p $PASSWORD 2>&1|tee -i "$LOGFILE"
+
+program_err=`sed -n -e '/^@@ERROR/p' $LOGFILE`
+server_info=`sed -n -e '/^>>Server/p' $LOGFILE`
+
+notify(){
+    notify-send "Zdclinet" "$1";
+    if [ $? -eq 127 ]; then
+        echo "\`notify-send' not installed."
+        echo "$1"
+    fi
+}
+
+for msg in "$program_err" "$server_info"; do
+    if [[ $msg ]]; then
+        notify "${msg##>>}"
+    fi
+done
+
+
+
